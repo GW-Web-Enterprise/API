@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "lib": ["es2019", "es2020.promise", "es2020.bigint", "es2020.string"], // override the default libs injected by 'target'
+    "module": "commonjs",
+    "target": "es2019",
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true, // force casing specified in the import statement to be the same as casing on disk«
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*", "src/typings/*"]
+    }
+  },
+  "compileOnSave": true,
+  "include": ["src"]
+}
