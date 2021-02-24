@@ -7,7 +7,9 @@
     "skipLibCheck": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true, // force casing specified in the import statement to be the same as casing on disk«
-    "esModuleInterop": true,
+    "resolveJsonModule": true, // *.json files you want to import need to be inside of "rootDir"
+    "moduleResolution": "Node", // "resolveJsonModule" cannot be specified without "node" module resolution strategy
+    "esModuleInterop": true, // without this, u have to do st like: import * as functions from "firebase-functions"
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
