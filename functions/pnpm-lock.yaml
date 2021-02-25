@@ -8,6 +8,7 @@ devDependencies:
   eslint-config-google: 0.14.0_eslint@7.20.0
   eslint-plugin-import: 2.22.1_eslint@7.20.0
   firebase-functions-test: 0.2.3_5b464519e9d674adbc379e97be2e703e
+  prettier: 2.2.1
   typescript: 4.2.2
 lockfileVersion: 5.2
 packages:
@@ -2152,6 +2153,13 @@ packages:
       node: '>= 0.8.0'
     resolution:
       integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
+  /prettier/2.2.1:
+    dev: true
+    engines:
+      node: '>=10.13.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
   /progress/2.0.3:
     dev: true
     engines:
@@ -2753,4 +2761,5 @@ specifiers:
   firebase-admin: ^9.5.0
   firebase-functions: ^3.13.2
   firebase-functions-test: ^0.2.3
+  prettier: ^2.2.1
   typescript: ^4.2.2
