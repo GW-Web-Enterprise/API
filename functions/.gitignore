@@ -1,4 +1,4 @@
-admin-sdk-credentials.json
+serviceAccountKey.json
 # Compiled JavaScript files
 lib/**/*.js
 lib/**/*.js.map
