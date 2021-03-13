@@ -1,24 +1,24 @@
 {
-  "compilerOptions": {
-    "lib": ["es2019", "es2020.promise", "es2020.bigint", "es2020.string"], // override the default libs injected by 'target'
-    "module": "commonjs",
-    "target": "es2019",
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true, // force casing specified in the import statement to be the same as casing on disk«
-    "resolveJsonModule": true, // *.json files you want to import need to be inside of "rootDir"
-    "moduleResolution": "Node", // "resolveJsonModule" cannot be specified without "node" module resolution strategy
-    "esModuleInterop": true, // without this, u have to do st like: import * as functions from "firebase-functions"
-    "noUnusedLocals": true,
-    "outDir": "lib",
-    "sourceMap": true,
-    "strict": true,
-    "baseUrl": ".",
-    "paths": {
-      "@app/*": ["src/*"]
-    }
-  },
-  "compileOnSave": true,
-  "include": ["src"]
+    "compilerOptions": {
+        "lib": ["es2019", "es2020.promise", "es2020.bigint", "es2020.string"], // override the default libs injected by 'target'
+        "module": "commonjs",
+        "target": "es2019",
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "noFallthroughCasesInSwitch": true,
+        "forceConsistentCasingInFileNames": true, // force casing specified in the import statement to be the same as casing on disk«
+        "resolveJsonModule": true, // *.json files you want to import need to be inside of "rootDir"
+        "moduleResolution": "Node", // "resolveJsonModule" cannot be specified without "node" module resolution strategy
+        "esModuleInterop": true, // without this, u have to do st like: import * as functions from "firebase-functions"
+        "noUnusedLocals": false,
+        "outDir": "lib",
+        "sourceMap": true,
+        "strict": true,
+        "baseUrl": ".",
+        "paths": {
+            "@app/*": ["src/*"]
+        }
+    },
+    "compileOnSave": true,
+    "include": ["src"]
 }
