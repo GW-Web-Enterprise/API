@@ -25,5 +25,10 @@ module.exports = {
     rules: {
         quotes: ['error', 'single'],
         'prettier/prettier': 'error'
+    },
+    settings: {
+        'import/resolver': {
+            typescript: {} // this loads <rootdir>/tsconfig.json to eslint
+        }
     }
 };
