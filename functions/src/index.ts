@@ -1,6 +1,8 @@
+/* eslint-disable import/no-unresolved */
 import 'module-alias/register';
 import { region, https } from 'firebase-functions';
 import admin from 'firebase-admin';
+import { aggregateDropboxSize } from '@app/utils/aggregateDropboxSize';
 
 // Use the Service Account if and only if u want to access Cloud Storage
 admin.initializeApp();
@@ -50,7 +52,7 @@ export const renameFile = region('asia-southeast2').https.onCall((data, ctx) => 
         await bucket.file(`${dropbox}/${currentName}`).rename(`${dropbox}/${newName}`);
         await bucket.file(`${dropbox}/${newName}`).setMetadata({
             // For .pdf files, Cloud Storage rejects the 'inline' but accepts 'attachment' attribute
-            // If u try to use the 'inline' attribute for .pdf files, the contentDispotition will NOT be updated
+            // If u try to use the 'inline' attribute for .pdf files, the contentDispotition will be ignored
             contentDisposition: `attachment; filename*=utf-8''${encodeURIComponent(newName)}`,
             metaData: {
                 modified: new Date().toISOString()
@@ -63,16 +65,14 @@ export const renameFile = region('asia-southeast2').https.onCall((data, ctx) => 
     });
 });
 
-export const aggregateDropboxFilesOnCreate = region('asia-southeast2')
+// Renaming a file will first create a file with a new name -> triggers .onFinalize()
+// and then delete the old one -> triggeres .onDelete()
+export const onDropboxFileUpload = region('asia-southeast2')
     .storage.object()
-    .onFinalize(async object => {
-        console.log('New object is created or new generation of an existing object');
-        console.log(JSON.stringify(object));
-    });
+    // Triggered each time a single file is uploaded. Even if the client uploads multiple files concurrently,
+    // Cloud Storage only creates one at a time
+    .onFinalize(object => aggregateDropboxSize(object, 'upload'));
 
-export const aggregateDropboxFilesOnDelete = region('asia-southeast2')
+export const onDropboxFileDelete = region('asia-southeast2')
     .storage.object()
-    .onDelete(async object => {
-        console.log('Deleted or overwritten');
-        console.log(JSON.stringify(object));
-    });
+    .onDelete(object => aggregateDropboxSize(object, 'delete'));
