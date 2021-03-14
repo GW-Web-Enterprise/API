@@ -11,12 +11,13 @@ export function aggregateDropboxSize({ bucket, name = '', size }: ObjectMetadata
     const repoId = name.match(/\/repo_(.*)\/dropbox/)![1];
     const userId = name.match(/\/dropbox_(.*)\//)![1];
     const difference = action === 'upload' ? Number(size) : -Number(size);
+    console.log(JSON.stringify({ repoId, userId, difference }));
     const db = admin.firestore();
     const dropboxesRef = db.collection('repos').doc(repoId).collection('dropboxes');
     async function main() {
         const querySnapshot = await dropboxesRef.where('ownerId', '==', userId).get();
         const dropboxId = querySnapshot.docs[0].id;
-        await dropboxesRef.doc(dropboxId).update({ value: admin.firestore.FieldValue.increment(difference) });
+        await dropboxesRef.doc(dropboxId).update({ size: admin.firestore.FieldValue.increment(difference) });
     }
     main().catch(err => console.error(JSON.stringify(err)));
 }
