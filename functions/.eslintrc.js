@@ -25,7 +25,8 @@ module.exports = {
     rules: {
         quotes: ['error', 'single'],
         'no-unused-vars': 'warn',
-        'prettier/prettier': 'error'
+        'prettier/prettier': 'error',
+        'require-jsdoc': 0
     },
     settings: {
         'import/resolver': {
