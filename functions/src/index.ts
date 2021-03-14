@@ -51,4 +51,15 @@ export const renameFile = region('asia-southeast2').https.onCall(async (data, ct
             console.log(JSON.stringify(err));
             if (err.code === 404) throw new https.HttpsError('not-found', 'The file you want to rename does not exist');
         });
+    await bucket
+        .file(`${dropbox}/${newName}`)
+        .setMetadata({
+            // For .pdf files, Cloud Storage rejects the 'inline' but accepts 'attachment' attribute
+            // If u try to use the 'inline' attribute for .pdf files, the contentDispotition will NOT be updated
+            contentDisposition: `attachment; filename*=utf-8''${encodeURIComponent(newName)}`,
+            metaData: {
+                modified: new Date().toISOString()
+            }
+        })
+        .catch(err => console.log(JSON.stringify(err)));
 });
