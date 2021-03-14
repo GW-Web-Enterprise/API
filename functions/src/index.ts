@@ -65,3 +65,17 @@ export const renameFile = region('asia-southeast2').https.onCall(async (data, ct
         })
         .catch(err => console.log(JSON.stringify(err)));
 });
+
+export const aggregateDropboxFilesOnCreate = region('asia-southeast2')
+    .storage.object()
+    .onFinalize(async object => {
+        console.log('New object is created or new generation of an existing object');
+        console.log(JSON.stringify(object));
+    });
+
+export const aggregateDropboxFilesOnDelete = region('asia-southeast2')
+    .storage.object()
+    .onDelete(async object => {
+        console.log('Deleted or overwritten');
+        console.log(JSON.stringify(object));
+    });
