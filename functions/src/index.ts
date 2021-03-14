@@ -65,12 +65,10 @@ export const renameFile = region('asia-southeast2').https.onCall((data, ctx) => 
     });
 });
 
-// Renaming a file will first create a file with a new name -> triggers .onFinalize()
+// Renaming a file will first create a new file with a new name -> triggers .onFinalize()
 // and then delete the old one -> triggeres .onDelete()
 export const onDropboxFileUpload = region('asia-southeast2')
     .storage.object()
-    // Triggered each time a single file is uploaded. Even if the client uploads multiple files concurrently,
-    // Cloud Storage only creates one at a time
     .onFinalize(object => aggregateDropboxSize(object, 'upload'));
 
 export const onDropboxFileDelete = region('asia-southeast2')
