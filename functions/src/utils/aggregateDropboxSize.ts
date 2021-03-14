@@ -19,5 +19,5 @@ export function aggregateDropboxSize({ bucket, name = '', size }: ObjectMetadata
         const dropboxId = querySnapshot.docs[0].id;
         await dropboxesRef.doc(dropboxId).update({ size: admin.firestore.FieldValue.increment(difference) });
     }
-    main().catch(err => console.error(JSON.stringify(err)));
+    return main().catch(err => console.error(JSON.stringify(err)));
 }
