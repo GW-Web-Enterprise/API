@@ -13,7 +13,7 @@ export const handleFacultyWrite = region('asia-southeast2')
             // when a doc is updated...
             batch.delete(uniqueNamesRef.doc(change.before.data()!.name));
             batch.set(uniqueNamesRef.doc(change.after.data()!.name), {});
-            return await batch.commit();
+            return batch.commit();
         }
         // create -> before: undefined + after: {...}
         // delete -> before: {...} + after: undefined
@@ -26,5 +26,5 @@ export const handleFacultyWrite = region('asia-southeast2')
             // Initial value of the aggregator is the total number of faculties
             batch.set(aggregateFacRef, { value: (await db.collection('faculties').get()).size });
         else batch.update(aggregateFacRef, { value: firestore.FieldValue.increment(difference) });
-        return await batch.commit();
+        return batch.commit();
     });

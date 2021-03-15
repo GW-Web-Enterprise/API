@@ -27,7 +27,7 @@ export const renameFile = region('asia-southeast2').https.onCall((data, ctx) => 
             }
         });
     }
-    main().catch(err => {
+    return main().catch(err => {
         console.error(JSON.stringify(err));
         if (err.code === 404) throw new https.HttpsError('not-found', 'The file you want to rename does not exist');
     });
