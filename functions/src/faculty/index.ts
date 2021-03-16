@@ -1,4 +1,6 @@
-import { firestore } from 'firebase-admin';
+/* eslint-disable import/no-unresolved */
+import { recursiveDelete } from '@app/utils/recursiveDelete';
+import { firestore, auth } from 'firebase-admin';
 import { region } from 'firebase-functions';
 
 export const handleFacultyWrite = region('asia-southeast2')
@@ -16,8 +18,16 @@ export const handleFacultyWrite = region('asia-southeast2')
         }
         // create -> before: undefined + after: {...}
         // delete -> before: {...} + after: undefined
-        if (!change.before.exists) uniqueNamesRef.doc(change.after.data()!.name).set({}); // when a doc is created...
-        if (!change.after.exists) uniqueNamesRef.doc(change.before.data()!.name).delete(); // when a doc is deleted...
+        if (!change.before.exists) {
+            // when a doc is created...
+            uniqueNamesRef.doc(change.after.data()!.name).set({});
+            copySysUsersToNewFaculty(change.after.ref).catch(console.error);
+        }
+        if (!change.after.exists) {
+            // when a doc is deleted...
+            uniqueNamesRef.doc(change.before.data()!.name).delete();
+            recursiveDelete(change.after.ref.path); // path looks like this: faculties/Dqf2XNNoCNPv5rJSgK9p
+        }
         // 📌 Aggregate the total number of faculties...
         const aggregateFacRef = db.collection('aggregate').doc('numbFaculties');
         const difference = !change.before.exists ? 1 : -1;
@@ -27,9 +37,16 @@ export const handleFacultyWrite = region('asia-southeast2')
         else aggregateFacRef.update({ value: firestore.FieldValue.increment(difference) });
     });
 
+async function copySysUsersToNewFaculty(facultyRef: firestore.DocumentReference) {
+    const { users } = await auth().listUsers();
+    return users.forEach(({ uid, email, displayName, photoURL = null }) =>
+        facultyRef.collection('sysusers').doc(uid).create({ photoURL, email, displayName })
+    );
+}
+
 export const addSysUserToFaculties = region('asia-southeast2')
     .auth.user()
-    .onCreate(async ({ uid, photoURL, email, displayName }) => {
+    .onCreate(async ({ uid, photoURL = null, email, displayName }) => {
         const snapshot = await firestore().collection('faculties').get();
         return snapshot.docs.map(({ ref }) =>
             ref.collection('sysusers').doc(uid).create({ photoURL, email, displayName })
