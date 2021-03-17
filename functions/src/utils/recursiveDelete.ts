@@ -8,11 +8,15 @@ export const recursiveDelete = (path: string) =>
     // Note the limitations: https://firebase.google.com/docs/firestore/solutions/delete-collections#limitations
     firestore
         .delete(path, {
-            project: process.env.GCP_PROJECT,
+            // @ts-ignore
+            // FIREBASE_CONFIG is always populated by the Firebase CLI when deploying, but will not be present
+            // when deploying via gcloud or other means.
+            // process.env.GCP_PROJECT will throw the FirebaseError 'no currently active project'. Somehow the cloud runtime does not populate this env
+            // FIREBASE_CONFIG: '{"storageBucket":"gw-enterprise.appspot.com","projectId":"gw-enterprise"}' is a JSON string
+            project: JSON.parse(process.env.FIREBASE_CONFIG).projectId,
             // firebase login:ci -> firebase functions:config:set secrets.firebase_token="set_token_here" -> firebase deploy --only functions
-            token: process.env.FIREBASE_TOKEN, // This is passed from the .yaml file used for GitHub Actions or the local emulator
+            token: process.env.FIREBASE_TOKEN, // <- The local emulator or .yaml file for CI will populate this env
             recursive: true,
             yes: true
         })
-        .then(() => console.log('All envs: ', process.env))
         .catch(console.error);
