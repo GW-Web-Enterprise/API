@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import { recursiveDelete } from '@app/utils/recursiveDelete';
-import { firestore, auth } from 'firebase-admin';
+import { auth, firestore } from 'firebase-admin';
 import { region } from 'firebase-functions';
 
 export const onFacultyWrite = region('asia-southeast2')
@@ -21,7 +21,7 @@ export const onFacultyWrite = region('asia-southeast2')
         if (!change.before.exists) {
             // when a doc is created...
             uniqueNamesRef.doc(change.after.data()!.name).set({});
-            copySysUsersToNewFaculty(change.after.ref);
+            copySysusersToNewFaculty(change.after.ref);
         }
         if (!change.after.exists) {
             // when a doc is deleted...
@@ -37,7 +37,7 @@ export const onFacultyWrite = region('asia-southeast2')
         else aggregateFacRef.set({ value: firestore.FieldValue.increment(difference) }, { merge: true });
     });
 
-function copySysUsersToNewFaculty(facultyRef: firestore.DocumentReference) {
+function copySysusersToNewFaculty(facultyRef: firestore.DocumentReference) {
     (async function () {
         const { users } = await auth().listUsers();
         await Promise.all(
