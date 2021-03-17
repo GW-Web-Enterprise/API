@@ -11,7 +11,7 @@ export function aggregateDropboxSize({ bucket, name = '', size }: ObjectMetadata
     const repoId = name.match(/\/repo_(.*)\/dropbox/)![1];
     const userId = name.match(/\/dropbox_(.*)\//)![1];
     const difference = action === 'upload' ? Number(size) : -Number(size);
-    console.log(JSON.stringify({ name, difference }));
+    console.log(`Aggregating dropbox of user_${userId} in repo_${repoId}`, { name, difference });
     const db = firestore();
     const dropboxesRef = db.collection('repos').doc(repoId).collection('dropboxes');
     async function main() {
@@ -19,5 +19,5 @@ export function aggregateDropboxSize({ bucket, name = '', size }: ObjectMetadata
         const dropboxId = querySnapshot.docs[0].id;
         await dropboxesRef.doc(dropboxId).update({ size: firestore.FieldValue.increment(difference) });
     }
-    return main().catch(err => console.error(JSON.stringify(err)));
+    return main().catch(console.error);
 }

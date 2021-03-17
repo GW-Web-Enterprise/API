@@ -3,7 +3,7 @@ import { recursiveDelete } from '@app/utils/recursiveDelete';
 import { firestore, auth } from 'firebase-admin';
 import { region } from 'firebase-functions';
 
-export const handleFacultyWrite = region('asia-southeast2')
+export const onFacultyWrite = region('asia-southeast2')
     .firestore.document('faculties/{facultyId}')
     .onWrite(async change => {
         if (change.before.isEqual(change.after)) return; // this kind of update event changes nothing in the DB
@@ -32,9 +32,9 @@ export const handleFacultyWrite = region('asia-southeast2')
         const aggregateFacRef = db.collection('aggregate').doc('numbFaculties');
         const difference = !change.before.exists ? 1 : -1;
         if (!(await aggregateFacRef.get()).exists)
-            // Initial value of the aggregator is the total number of faculties
-            aggregateFacRef.set({ value: (await db.collection('faculties').get()).size });
-        else aggregateFacRef.update({ value: firestore.FieldValue.increment(difference) });
+            // The initial value of numbFaculties is the total number of existing faculties
+            aggregateFacRef.set({ value: (await db.collection('faculties').get()).size }, { merge: true });
+        else aggregateFacRef.set({ value: firestore.FieldValue.increment(difference) }, { merge: true });
     });
 
 function copySysUsersToNewFaculty(facultyRef: firestore.DocumentReference) {
@@ -47,12 +47,3 @@ function copySysUsersToNewFaculty(facultyRef: firestore.DocumentReference) {
         );
     })().catch(console.error);
 }
-
-export const addSysUserToFaculties = region('asia-southeast2')
-    .auth.user()
-    .onCreate(async ({ uid, photoURL = null, email, displayName }) => {
-        const snapshot = await firestore().collection('faculties').get();
-        return snapshot.docs.map(({ ref }) =>
-            ref.collection('sysusers').doc(uid).create({ photoURL, email, displayName })
-        );
-    });

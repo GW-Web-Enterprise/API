@@ -8,5 +8,6 @@ import admin from 'firebase-admin';
 // The envs mentioned above are applied automatically when you initialize the Admin SDK with no arguments like below
 admin.initializeApp();
 
+export * from '@app/user';
 export * from '@app/faculty';
 export * from '@app/dropbox';
