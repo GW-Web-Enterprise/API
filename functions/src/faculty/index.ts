@@ -47,3 +47,22 @@ function copySysusersToNewFaculty(facultyRef: firestore.DocumentReference) {
         );
     })().catch(console.error);
 }
+
+type IFacultyMember = { email: string; displayName: string; photoURL: string | null; role: 'student' | 'coordinator' };
+export const onFacultyMemberAdd = region('asia-southeast2')
+    .firestore.document('faculties/{facultyId}/members/{userId}')
+    .onCreate(async (doc, { params }) => {
+        const { facultyId, userId } = params;
+        const { role } = doc.data() as IFacultyMember;
+        const facultiesRef = firestore().collection('faculties');
+        facultiesRef.doc(facultyId).collection('sysusers').doc(userId).delete();
+        const docSnapshot = await facultiesRef.doc(facultyId).get();
+        const facultyName = docSnapshot.get('name');
+        firestore().collection('user_faculties').add({
+            userId,
+            role,
+            facultyId,
+            facultyName,
+            createdAt: firestore.FieldValue.serverTimestamp()
+        });
+    });
