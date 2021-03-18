@@ -66,3 +66,23 @@ export const onFacultyMemberAdd = region('asia-southeast2')
             createdAt: firestore.FieldValue.serverTimestamp()
         });
     });
+
+export const onFacultyMemberRemove = region('asia-southeast2')
+    .firestore.document('faculties/{facultyId}/members/{userId}')
+    .onDelete(async (doc, { params }) => {
+        const { facultyId, userId } = params;
+        const { email, displayName, photoURL } = doc.data() as IFacultyMember;
+        firestore()
+            .collection('faculties')
+            .doc(facultyId)
+            .collection('sysusers')
+            .doc(userId)
+            .create({ email, displayName, photoURL });
+        // Destroy the link between user and faculty when this user is removed from the faculty
+        const querySnapshot = await firestore()
+            .collection('user_faculties')
+            .where('userId', '==', userId)
+            .where('facultyId', '==', facultyId)
+            .get();
+        querySnapshot.docs[0].ref.delete();
+    });
