@@ -2,7 +2,7 @@
 // Since the firebase-tool package has no types, we have to use require
 const { firestore } = require('firebase-tools');
 
-export const recursiveDelete = (path: string) =>
+export const recursiveDelete: (path: string) => Promise<void> = path =>
     // Using the CLI, you can recursively delete all the docs in a collection. It will even find and delete
     // "orphaned" docs that no longer have a parent. No need to implement your own recursive delete logic
     // Note the limitations: https://firebase.google.com/docs/firestore/solutions/delete-collections#limitations

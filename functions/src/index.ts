@@ -10,4 +10,4 @@ admin.initializeApp();
 
 export * from '@app/user';
 export * from '@app/faculty';
-export * from '@app/dropbox';
+export * from '@app/repo';
