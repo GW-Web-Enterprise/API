@@ -10,8 +10,8 @@ service cloud.firestore {
     }
     
     function numbFacultiesIsLessThan20() {
-    	let numbFaculties = get(/$(prefix())/aggregate/numbFaculties).data.value;
-    	return request.method == 'update' || numbFaculties < 20;
+    	let snapshot = get(/$(prefix())/aggregate/numbFaculties);
+    	return request.method == 'update' || snapshot == null || snapshot.data.value < 20;
     }
     function resourceIsValidFaculty() { // check faculty payload on create and update
       let facultyName = request.resource.data.name;
@@ -25,6 +25,14 @@ service cloud.firestore {
       allow read, delete: if isLoggedIn();
       allow create, update: if isLoggedIn() && fieldsExist(['name'], []) && resourceIsValidFaculty() 
       && numbFacultiesIsLessThan20();
+      
+      match /sysusers/{userId} {
+      	allow read, write: if isLoggedIn();
+      }
+      
+       match /members/{userId} {
+      	allow read, write: if isLoggedIn();
+      }
     }
     
     match /repos/{repoId} {
