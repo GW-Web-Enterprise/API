@@ -21,7 +21,7 @@ export const onFacultyWrite = region('asia-southeast2')
         if (!change.before.exists) {
             // when a doc is created...
             uniqueNamesRef.doc(change.after.data()!.name).set({});
-            copySysusersToNewFaculty(change.after.ref);
+            copySysusersToNewFaculty(change.after.ref).catch(console.error);
         }
         if (!change.after.exists) {
             // when a doc is deleted...
@@ -38,15 +38,13 @@ export const onFacultyWrite = region('asia-southeast2')
         else aggregateFacRef.set({ value: firestore.FieldValue.increment(difference) }, { merge: true });
     });
 
-function copySysusersToNewFaculty(facultyRef: firestore.DocumentReference) {
-    (async function () {
-        const { users } = await auth().listUsers();
-        await Promise.all(
-            users.map(({ uid, email, displayName, photoURL = null }) =>
-                facultyRef.collection('sysusers').doc(uid).create({ photoURL, email, displayName })
-            )
-        );
-    })().catch(console.error);
+async function copySysusersToNewFaculty(facultyRef: firestore.DocumentReference) {
+    const { users } = await auth().listUsers();
+    return await Promise.all(
+        users.map(({ uid, email, displayName, photoURL = null }) =>
+            facultyRef.collection('sysusers').doc(uid).create({ photoURL, email, displayName })
+        )
+    );
 }
 
 async function deleteFacultyRepos(facultyId: string) {
