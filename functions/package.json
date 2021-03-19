@@ -2,7 +2,8 @@
   "name": "functions",
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
-    "build": "rm -rf lib && tsc",
+    "prebuild": "rm -rf lib",
+    "build": "tsc",
     "serve": "npm run build && firebase emulators:start --import=./localData --export-on-exit",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
