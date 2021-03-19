@@ -16,8 +16,8 @@ export function aggregateDropboxSize({ bucket, name = '', size }: ObjectMetadata
     const dropboxesRef = db.collection('repos').doc(repoId).collection('dropboxes');
     async function main() {
         const querySnapshot = await dropboxesRef.where('ownerId', '==', userId).get();
-        const dropboxId = querySnapshot.docs[0].id;
-        await dropboxesRef.doc(dropboxId).update({ size: firestore.FieldValue.increment(difference) });
+        const dropboxId = querySnapshot.docs[0]?.id;
+        dropboxId && (await dropboxesRef.doc(dropboxId).update({ size: firestore.FieldValue.increment(difference) }));
     }
     return main().catch(console.error);
 }
