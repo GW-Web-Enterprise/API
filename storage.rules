@@ -2,13 +2,14 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
 
-    function isDropboxPath() {
-      let path = resource.name;
-      return path.matches('^faculty_.+\\/repo_.+\\/dropbox_.+');
+    match /{allPaths=**} { // Block access to everything by default
+      allow read, write: if false;
     }
 
-    match /{allPaths=**} {
-      allow read, write: if isLoggedIn() && isDropboxPath();
+    // Only allow access to /faculty_{id}/repo_{id}/dropbox_{id}/{filename}
+    match /{faculty}/{repo}/{dropbox}/{filename} {
+    	allow read, write: if isLoggedIn() && faculty.matches('^faculty_.+')
+      	&& repo.matches('^repo_.+') && dropbox.matches('^dropbox_.+');
     }
   }
 }
