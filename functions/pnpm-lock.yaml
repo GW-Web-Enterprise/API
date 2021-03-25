@@ -2,8 +2,10 @@ dependencies:
   firebase-admin: 9.5.0
   firebase-functions: 3.13.2_firebase-admin@9.5.0
   firebase-tools: 9.6.1
+  glob: 7.1.6
   module-alias: 2.2.2
 devDependencies:
+  '@types/glob': 7.1.3
   '@typescript-eslint/eslint-plugin': 4.15.2_f59adae6c23e25423ba8722b4851fe62
   '@typescript-eslint/parser': 4.15.2_eslint@7.20.0+typescript@4.2.2
   eslint: 7.20.0
@@ -439,9 +441,8 @@ packages:
       integrity: sha512-I8cGRJj3pyOLs/HndoP+25vOqhqWkAZsWMEmq1qXy/b/M3ppufecUwaK2/TVDVxcV61/iSdhykUjQQ2DLSrTdg==
   /@types/glob/7.1.3:
     dependencies:
-      '@types/minimatch': 3.0.3
+      '@types/minimatch': 3.0.4
       '@types/node': 14.14.35
-    dev: false
     resolution:
       integrity: sha512-SEYeGAIQIQX8NN6LDKprLjbrd5dARM5EXsd8GI/A5l0apYI1fGMWgPHSe4ZKL4eozlAyI+doUE9XbYS4xCkQ1w==
   /@types/json-schema/7.0.7:
@@ -464,10 +465,9 @@ packages:
     dev: false
     resolution:
       integrity: sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==
-  /@types/minimatch/3.0.3:
-    dev: false
+  /@types/minimatch/3.0.4:
     resolution:
-      integrity: sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
+      integrity: sha512-1z8k4wzFnNjVK/tlxvrWuK5WMt6mydWWP7+zvH5eFep4oj+UkrfiJTRtjCeBXNpwaA/FYqqtb4/QS4ianFpIRA==
   /@types/node/10.17.54:
     dev: false
     resolution:
@@ -486,7 +486,6 @@ packages:
     resolution:
       integrity: sha512-vFHy/ezP5qI0rFgJ7aQnjDXwAMrG0KqqIH7tQG5PPv3BWBayOPIQNBjVc/P6hhdZfMx51REc6tfDNXHUio893g==
   /@types/node/14.14.35:
-    dev: false
     resolution:
       integrity: sha512-Lt+wj8NVPx0zUmUwumiVXapmaLUcAk3yPuHCFVXras9k5VT9TdhJqKqGVUQCD60OTMCl0qxJ57OiTL0Mic3Iag==
   /@types/qs/6.9.5:
@@ -5787,6 +5786,7 @@ packages:
     resolution:
       integrity: sha512-zshzwQW7gG7hjpBlgeQP9RuyPGNxvJdzR8SUM3QhxCnLjWN2E7j3dOvpeDcQoETfHx0urRS7EtmVToql7YpU4A==
 specifiers:
+  '@types/glob': ^7.1.3
   '@typescript-eslint/eslint-plugin': ^4.15.2
   '@typescript-eslint/parser': ^4.15.2
   eslint: ^7.20.0
@@ -5799,6 +5799,7 @@ specifiers:
   firebase-functions: ^3.13.2
   firebase-functions-test: ^0.2.3
   firebase-tools: ^9.6.1
+  glob: ^7.1.6
   module-alias: ^2.2.2
   prettier: ^2.2.1
   rimraf: ^3.0.2
