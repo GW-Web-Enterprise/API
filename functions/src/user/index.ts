@@ -6,6 +6,7 @@ export const onUserCreate = region('asia-southeast2')
     .auth.user()
     .onCreate(async newUser => {
         aggregateSysusers().catch(console.error);
+        auth().setCustomUserClaims(newUser.uid, { isGuest: true }).catch(console.error);
         addNewSysuserToFaculties(newUser).catch(console.error);
     });
 
@@ -19,5 +20,7 @@ async function aggregateSysusers() {
 
 async function addNewSysuserToFaculties({ uid, photoURL, email, displayName }: UserRecord) {
     const snapshot = await firestore().collection('faculties').get();
-    snapshot.docs.map(({ ref }) => ref.collection('sysusers').doc(uid).create({ photoURL, email, displayName }));
+    return Promise.all(
+        snapshot.docs.map(({ ref }) => ref.collection('sysusers').doc(uid).create({ photoURL, email, displayName }))
+    );
 }
