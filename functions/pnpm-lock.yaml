@@ -14,6 +14,7 @@ devDependencies:
   eslint-plugin-prettier: 3.3.1_991a7c46cc739487e9cb2e863aa32c6d
   firebase-functions-test: 0.2.3_5b464519e9d674adbc379e97be2e703e
   prettier: 2.2.1
+  rimraf: 3.0.2
   typescript: 4.2.2
 lockfileVersion: 5.2
 packages:
@@ -5800,4 +5801,5 @@ specifiers:
   firebase-tools: ^9.6.1
   module-alias: ^2.2.2
   prettier: ^2.2.1
+  rimraf: ^3.0.2
   typescript: ^4.2.2
