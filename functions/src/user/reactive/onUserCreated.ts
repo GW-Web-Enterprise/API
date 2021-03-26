@@ -2,7 +2,7 @@ import { auth, firestore } from 'firebase-admin';
 import { region } from 'firebase-functions';
 import { UserRecord } from 'firebase-functions/lib/providers/auth';
 
-export const onUserCreate = region('asia-southeast2')
+export const onUserCreated = region('asia-southeast2')
     .auth.user()
     .onCreate(async newUser => {
         aggregateSysusers().catch(console.error);

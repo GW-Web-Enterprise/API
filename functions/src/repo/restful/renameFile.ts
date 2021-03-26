@@ -1,36 +1,8 @@
-/* eslint-disable import/no-unresolved */
-import { recursiveDelete } from '@app/utils/recursiveDelete';
-import { aggregateDropboxSize } from '@app/repo/aggregateDropboxSize';
 import { storage } from 'firebase-admin';
 import { https, region } from 'firebase-functions';
 
-export const onRepoDelete = region('asia-southeast2')
-    .firestore.document('repos/{repoId}')
-    .onDelete(snapshot => recursiveDelete(snapshot.ref.path));
-
-export const onDropboxDelete = region('asia-southeast2')
-    .firestore.document('repos/{repoId}/dropboxes/{dropboxId}')
-    .onDelete(snapshot => {
-        const { facultyId, repoId, ownerId } = snapshot.data();
-        return (
-            storage()
-                .bucket()
-                // force will suppress errors until all files have been processed
-                .deleteFiles({ prefix: `faculty_${facultyId}/repo_${repoId}/dropbox_${ownerId}`, force: true })
-                .catch(console.error)
-        );
-    });
-
 // Renaming a file will first create a new file with a new name -> triggers .onFinalize()
 // and then delete the old one -> triggeres .onDelete()
-export const onDropboxFileUpload = region('asia-southeast2')
-    .storage.object()
-    .onFinalize(object => aggregateDropboxSize(object, 'upload'));
-
-export const onDropboxFileDelete = region('asia-southeast2')
-    .storage.object()
-    .onDelete(object => aggregateDropboxSize(object, 'delete'));
-
 export const renameFile = region('asia-southeast2').https.onCall((data, ctx) => {
     const user = ctx.auth;
     if (!user) throw new https.HttpsError('unauthenticated', 'You are not logged in!');
