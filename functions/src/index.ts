@@ -15,6 +15,6 @@ const funcFilePaths = sync(`${process.cwd()}/**/+(reactive|restful)/*.js`, {
     ignore: './node_modules/**'
 });
 
-let exported = {};
-funcFilePaths.forEach(path => (exported = { ...exported, ...require(path) }));
-export default exported;
+let funcs = {};
+funcFilePaths.forEach(path => (funcs = { ...funcs, ...require(path) }));
+export default funcs;
