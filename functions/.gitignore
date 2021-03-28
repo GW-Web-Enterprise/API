@@ -1,8 +1,5 @@
 localData
 serviceAccountKey.json
-# Compiled JavaScript files
-lib/**/*.js
-lib/**/*.js.map
 
 # Node.js dependency directory
 node_modules/
