@@ -1,8 +1,10 @@
 devDependencies:
   '@firebase/rules-unit-testing': 1.2.5
-  '@types/mocha': 8.2.1
-  '@types/node': 14.14.35
+  '@types/mocha': 8.2.2
+  '@types/node': 14.14.37
   mocha: 8.3.2
+  rimraf: 3.0.2
+  typescript: 4.2.3
 lockfileVersion: 5.2
 packages:
   /@firebase/analytics-types/0.4.0:
@@ -116,7 +118,7 @@ packages:
       '@firebase/logger': 0.2.6
       '@firebase/util': 0.4.0
       '@firebase/webchannel-wrapper': 0.4.1
-      '@grpc/grpc-js': 1.2.11
+      '@grpc/grpc-js': 1.2.12
       '@grpc/proto-loader': 0.5.6
       node-fetch: 2.6.1
       tslib: 2.1.0
@@ -294,16 +296,16 @@ packages:
     dev: true
     resolution:
       integrity: sha512-0yPjzuzGMkW1GkrC8yWsiN7vt1OzkMIi9HgxRmKREZl2wnNPOKo/yScTjXf/O57HM8dltqxPF6jlNLFVtc2qdw==
-  /@grpc/grpc-js/1.2.11:
+  /@grpc/grpc-js/1.2.12:
     dependencies:
-      '@types/node': 14.14.35
+      '@types/node': 14.14.37
       google-auth-library: 6.1.6
       semver: 6.3.0
     dev: true
     engines:
       node: ^8.13.0 || >=10.10.0
     resolution:
-      integrity: sha512-DZqx3nHBm2OGY7NKq4sppDEfx4nBAsQH/d/H/yxo/+BwpVLWLGs+OorpwQ+Fqd6EgpDEoi4MhqndjGUeLl/5GA==
+      integrity: sha512-+gPCklP1eqIgrNPyzddYQdt9+GvZqPlLpIjIo+TveE+gbtp74VV1A2ju8ExeO8ma8f7MbpaGZx/KJPYVWL9eDw==
   /@grpc/proto-loader/0.5.6:
     dependencies:
       lodash.camelcase: 4.3.0
@@ -360,18 +362,18 @@ packages:
     dev: true
     resolution:
       integrity: sha512-5tXH6Bx/kNGd3MgffdmP4dy2Z+G4eaXw0SE81Tq3BNadtnMR5/ySMzX4SLEzHJzSmPNn4HIdpQsBvXMUykr58w==
-  /@types/mocha/8.2.1:
+  /@types/mocha/8.2.2:
     dev: true
     resolution:
-      integrity: sha512-NysN+bNqj6E0Hv4CTGWSlPzMW6vTKjDpOteycDkV4IWBsO+PU48JonrPzV9ODjiI2XrjmA05KInLgF5ivZ/YGQ==
-  /@types/node/13.13.47:
+      integrity: sha512-Lwh0lzzqT5Pqh6z61P3c3P5nm6fzQK/MMHl9UKeneAeInVflBSz1O2EkX6gM6xfJd7FBXBY5purtLx7fUiZ7Hw==
+  /@types/node/13.13.48:
     dev: true
     resolution:
-      integrity: sha512-R6851wTjN1YJza8ZIeX6puNBSi/ZULHVh4WVleA7q256l+cP2EtXnKbO455fTs2ytQk3dL9qkU+Wh8l/uROdKg==
-  /@types/node/14.14.35:
+      integrity: sha512-z8wvSsgWQzkr4sVuMEEOvwMdOQjiRY2Y/ZW4fDfjfe3+TfQrZqFKOthBgk2RnVEmtOKrkwdZ7uTvsxTBLjKGDQ==
+  /@types/node/14.14.37:
     dev: true
     resolution:
-      integrity: sha512-Lt+wj8NVPx0zUmUwumiVXapmaLUcAk3yPuHCFVXras9k5VT9TdhJqKqGVUQCD60OTMCl0qxJ57OiTL0Mic3Iag==
+      integrity: sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw==
   /@ungap/promise-all-settled/1.1.2:
     dev: true
     resolution:
@@ -1246,7 +1248,7 @@ packages:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.1
-      '@types/node': 13.13.47
+      '@types/node': 13.13.48
       long: 4.0.0
     dev: true
     hasBin: true
@@ -1317,6 +1319,13 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-jGStX9MNqxyXbiNE/+f3kqam30I=
+  /rimraf/3.0.2:
+    dependencies:
+      glob: 7.1.6
+    dev: true
+    hasBin: true
+    resolution:
+      integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
   /safe-buffer/5.2.1:
     dev: true
     resolution:
@@ -1441,6 +1450,13 @@ packages:
     dev: true
     resolution:
       integrity: sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
+  /typescript/4.2.3:
+    dev: true
+    engines:
+      node: '>=4.2.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-qOcYwxaByStAWrBf4x0fibwZvMRG+r4cQoTjbPtUlrWjBHbmCAww1i448U0GJ+3cNNEtebDteo/cHOR3xJ4wEw==
   /uri-js/4.4.1:
     dependencies:
       punycode: 2.1.1
@@ -1570,6 +1586,8 @@ packages:
       integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 specifiers:
   '@firebase/rules-unit-testing': ^1.2.5
-  '@types/mocha': ^8.2.1
-  '@types/node': ^14.14.35
+  '@types/mocha': ^8.2.2
+  '@types/node': ^14.14.37
   mocha: ^8.3.2
+  rimraf: ^3.0.2
+  typescript: ^4.2.3
