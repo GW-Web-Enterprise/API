@@ -4,11 +4,11 @@ service cloud.firestore {
     function prefix() {
   		return /databases/$(db)/documents;
     }
-  
+
     match /{document=**} { // Access to all resources are blocked by default
       allow read, write: if false;
     }
-    
+
     function numbFacultiesIsLessThan20() {
     	let snapshot = get(/$(prefix())/aggregate/numbFaculties);
     	return request.method == 'update' || snapshot == null || snapshot.data.value < 20;
@@ -21,27 +21,35 @@ service cloud.firestore {
       facultyName.size() <= 50 &&
       !exists(/$(prefix())/uniqueFacNames/$(facultyName))
     }
+    function isAdmin() {
+      return isLoggedIn() && debug(request.auth.token.isAdmin);
+    }
     match /faculties/{facultyId} {
-      allow read, delete: if isLoggedIn();
-      allow create, update: if isLoggedIn() && fieldsExist(['name'], []) && resourceIsValidFaculty() 
+      allow read: if isLoggedIn(); // any authenticated user can view a list of faculties
+      allow create, update: if isAdmin() && fieldsExist(['name'], []) && resourceIsValidFaculty()
       && numbFacultiesIsLessThan20();
-      
+      allow delete: if isAdmin();
+
       match /sysusers/{userId} {
-      	allow read, write: if isLoggedIn();
+      	allow read: if isAdmin();
       }
-      
-       match /members/{userId} {
-      	allow read, write: if isLoggedIn();
+
+      match /members/{userId} {
+      	allow read, create, delete: if isAdmin();
       }
     }
-    
+
     match /repos/{repoId} {
     	allow read: if isLoggedIn();
-    	allow write: if isLoggedIn();
-      
+    	allow write: if isAdmin();
+
       match /dropboxes/{dropboxId} {
       	allow read, write: if isLoggedIn();
       }
+    }
+
+    match /user_faculties/{docId} {
+    	allow read: if isLoggedIn();
     }
   }
 }
