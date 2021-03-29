@@ -6,7 +6,7 @@
     "prebuild": "rimraf lib",
     "build": "tsc",
     "pretest": "npm run build",
-    "test": "mocha lib/main/**/*.js --exit"
+    "test": "mocha lib/cases/**/*.js --exit"
   },
   "author": "Son Xuan Nguyen",
   "license": "ISC",
