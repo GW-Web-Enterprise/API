@@ -5,7 +5,7 @@
   "scripts": {
     "prebuild": "rimraf lib",
     "build": "tsc",
-    "pretest": "npm run build",
+    "pretest": "npm run build && clear",
     "test": "mocha lib/cases/**/*.js --exit"
   },
   "author": "Son Xuan Nguyen",
