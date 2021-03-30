@@ -38,20 +38,23 @@ service cloud.firestore {
     match /repos/{repoId} {
     	allow read: if isLoggedIn();
     	allow write: if isAdmin();
-
-      function isCoordinator() {
+      function getMember() {
         let facultyId = get(/$(prefix())/repos/$(repoId)).data.facultyId;
-        let snapshot = get(/$(prefix())/faculties/$(facultyId)/members/$(request.auth.uid));
-        return snapshot != null && snapshot.data.role == 'coordinator';
+        return get(/$(prefix())/faculties/$(facultyId)/members/$(request.auth.uid));
+      }
+      function isCoordinator() {
+        return getMember() != null && getMember().data.role == 'coordinator';
+      }
+      function isStudent() {
+        return getMember() != null && getMember().data.role == 'student';
       }
       function isDropboxOwner(ownerId) {
         return request.auth.uid == ownerId;
       }
       match /dropboxes/{dropboxId} {
-        // Manager and admin can view all dropboxes
-        // Coordinator is allowed to view all dropboxes in his faculty only
-        // Student is allowed to view his own dropbox only
       	allow read, list: if isAdmin() || isManager() || isCoordinator() || isDropboxOwner(resource.data.ownerId);
+        allow create: if isStudent();
+        allow update: if isCoordinator();
       }
     }
 
