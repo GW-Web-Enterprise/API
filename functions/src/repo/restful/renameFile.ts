@@ -12,6 +12,8 @@ export const renameFile = region('asia-southeast2').https.onCall((data, ctx) => 
     } = data;
     if (newName === currentName)
         throw new https.HttpsError('invalid-argument', 'New filename is exactly the same as the current filename');
+    if (!facultyId || !repoId || !currentName || !newName)
+        throw new https.HttpsError('invalid-argument', 'One of the required fields is empty');
     const dropbox = `faculty_${facultyId}/repo_${repoId}/dropbox_${user.uid}`;
     // The SDK automatically authenticates the local emulator suite with Google Cloud Storage
     // and selects the default bucket 'gw-enterprise.appspot.com'. So u don't have to do anything
