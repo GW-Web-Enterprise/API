@@ -1,5 +1,4 @@
 /* eslint-disable import/no-unresolved */
-import 'module-alias/register';
 import { validateFileWrite } from '@app/utils/validateFileWrite';
 import { storage } from 'firebase-admin';
 import { https, region } from 'firebase-functions';
