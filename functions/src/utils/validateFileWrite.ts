@@ -19,7 +19,9 @@ export const validateFileWrite = async ({
     if (firestore.Timestamp.now().valueOf() > timestamp.valueOf())
         throw new https.HttpsError(
             'permission-denied',
-            `Not allowed to make changes to dropbox after the ${performRename ? 'final' : 'close'} date and time`
+            `Not allowed to ${performRename ? 'rename' : 'delete'} file after the ${
+                performRename ? 'final' : 'close'
+            } date and time`
         );
     if (memberSnapshot.get('role') !== 'student')
         throw new https.HttpsError('permission-denied', 'You are not student of this faculty');
