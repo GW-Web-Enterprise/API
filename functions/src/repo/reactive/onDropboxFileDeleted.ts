@@ -12,5 +12,5 @@ export const onDropboxFileDeleted = region('asia-southeast2')
         const { facultyId, repoId, userId } = parseFilePath(name);
         return validateFileWrite({ facultyId, repoId, userId })
             .then(() => aggregateDropboxSize({ repoId, userId, size: -Number(size) }))
-            .catch();
+            .catch(console.error);
     });
