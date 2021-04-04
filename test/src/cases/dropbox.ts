@@ -2,7 +2,7 @@ import 'module-alias/register';
 import { PROJECT_ID } from '@app/constants';
 import { getAdminFirestore } from '@app/utils/getAdminFirestore';
 import { getFirestore } from '@app/utils/getFirestore';
-import { assertSucceeds, clearFirestoreData, firestore } from '@firebase/rules-unit-testing';
+import { assertSucceeds, assertFails, clearFirestoreData, firestore } from '@firebase/rules-unit-testing';
 import { TokenOptions } from '@firebase/rules-unit-testing/dist/src/api';
 
 const adminAuth: TokenOptions = { uid: 'adminUid', isAdmin: true };
@@ -21,6 +21,7 @@ before(`Seeding faculty members, faculty's repo, and repo's dropbox...`, () =>
         await facultyRef.set({ name: 'faculty name' });
         await facultyRef.collection('members').doc('studentUid').set({ role: 'student' });
         await facultyRef.collection('members').doc('coordinatorUid').set({ role: 'coordinator' });
+        await facultyRef.collection('members').doc('otherCoordinator').set({ role: 'coordinator' });
 
         await repoRef.set({ name: 'repo name', facultyId: 'facultyId' });
         await dropboxRef.set({ facultyId: 'facultyId', repoId: 'repoId', ownerId: 'studentUid' });
@@ -46,6 +47,17 @@ describe(`Resource: dropboxes`, () => {
                 reviewerEmail: 'billgates@gmail.com',
                 feedback: 'Amazing',
                 status: 'approved',
+                reviewedAt: firestore.FieldValue.serverTimestamp()
+            })
+        ));
+    it(`Coordinator cannot change dropbox's review of other coodinator`, async () =>
+        await assertFails(
+            getDropboxesRef({ uid: 'otherCoordinator', isGuest: true }).doc('dropboxId').update({
+                reviewerId: 'otherCoordinator',
+                reviewerName: 'Other Bill Gates',
+                reviewerEmail: 'otherbillgates@gmail.com',
+                feedback: 'Bad',
+                status: 'rejected',
                 reviewedAt: firestore.FieldValue.serverTimestamp()
             })
         ));

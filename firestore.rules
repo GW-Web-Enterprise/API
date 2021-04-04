@@ -51,15 +51,18 @@ service cloud.firestore {
       function isDropboxOwner(ownerId) {
         return request.auth.uid == ownerId;
       }
-      function isDropboxReview() {
+      function editOnlyAllowedFieldsInDropbox() {
         let updatedKeys = request.resource.data.diff(resource.data).affectedKeys();
         let requiredFields = ['reviewerId', 'reviewerName', 'reviewerEmail', 'feedback', 'status', 'reviewedAt'];
         return updatedKeys.hasOnly(requiredFields) && updatedKeys.hasAll(requiredFields);
       }
+      function isDropboxReviewer(dropboxDoc) {
+        return dropboxDoc.get('reviewerId', null) == null || request.auth.uid == dropboxDoc.reviewerId;
+      }
       match /dropboxes/{dropboxId} {
       	allow read, list: if isAdmin() || isManager() || isCoordinator() || isDropboxOwner(resource.data.ownerId);
         allow create: if isStudent();
-        allow update: if isCoordinator() && isDropboxReview();
+        allow update: if isCoordinator() && editOnlyAllowedFieldsInDropbox() && isDropboxReviewer(resource.data);
       }
     }
 
