@@ -53,8 +53,8 @@ service cloud.firestore {
       }
       function editOnlyAllowedFieldsInDropbox() {
         let updatedKeys = request.resource.data.diff(resource.data).affectedKeys();
-        let requiredFields = ['reviewerId', 'reviewerName', 'reviewerEmail', 'feedback', 'status', 'reviewedAt'];
-        return updatedKeys.hasOnly(requiredFields) && updatedKeys.hasAll(requiredFields);
+        // Only these fields or a subset of these fields cam be updated
+        return updatedKeys.hasOnly(['reviewerId', 'reviewerName', 'reviewerEmail', 'feedback', 'status', 'reviewedAt']);
       }
       function isDropboxReviewer(dropboxDoc) {
         return dropboxDoc.get('reviewerId', null) == null || request.auth.uid == dropboxDoc.reviewerId;
