@@ -16,6 +16,7 @@ export const validateFileWrite = async ({
     const timestamp: firestore.Timestamp = performRename
         ? repoSnapshot.get('finalTimestamp')
         : repoSnapshot.get('closeTimestamp');
+    if (!timestamp) return;
     if (firestore.Timestamp.now().valueOf() > timestamp.valueOf())
         throw new https.HttpsError(
             'permission-denied',
