@@ -35,7 +35,7 @@ async function sendMailToUser(uid: string, sysrole: 'manager' | 'guest') {
                             <p>Admin has set your role to ${sysrole}</p>
                             <p>With this system role, ${sysrole === 'manager' ? managerRights : guestRights}</p>
                             <p>If you are currently signed in, please logout and login back again for the new role to take effect</p>
-                            <p>If this is done by mistake, please contact admin immediately via the email ${ADMIN_EMAIL}</p>
+                            <p>If you think this is a mistake, please contact admin immediately via the email ${ADMIN_EMAIL}</p>
                             <p>Thanks for reading,</p>
                             <p>Your GW Web Enterprise Group 2 team</p>`
                 }

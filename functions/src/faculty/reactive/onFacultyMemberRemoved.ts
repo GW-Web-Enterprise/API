@@ -31,7 +31,7 @@ async function sendMailToRemovedMember(facultyId: string, { email, displayName }
                 subject: 'You have just been removed from a faculty',
                 html: `<p>Hello ${displayName},</p>
                     <p>Admin has removed you from the faculty ${facultyName}</p>
-                    <p>If this is done by mistake, please contact admin immediately via the email ${ADMIN_EMAIL}</p>
+                    <p>If you think this is a mistake, please contact admin immediately via the email ${ADMIN_EMAIL}</p>
                     <p>Thanks for reading,</p>
                     <p>Your GW Web Enterprise Group 2 team</p>`
             }
