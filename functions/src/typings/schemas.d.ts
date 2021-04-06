@@ -22,3 +22,11 @@ export type IDropbox = {
     feedback: string;
     reviewedAt: firestore.Timestamp;
 };
+
+export type IRepo = {
+    name: string;
+    facultyId: string;
+    closeTimestamp: firestore.Timestamp;
+    finalTimestamp: firestore.Timestamp;
+    description?: string;
+};

@@ -1,13 +1,13 @@
 /* eslint-disable import/no-unresolved */
 import { ADMIN_EMAIL } from '@app/constants';
-import { IFacultyMember } from '@app/typings/schemas';
+import { IFacultyMember, IRepo } from '@app/typings/schemas';
 import { firestore } from 'firebase-admin';
 import { region } from 'firebase-functions';
 
 export const onRepoCreated = region('asia-southeast2')
     .firestore.document('repos/{repoId}')
     .onCreate(async snapshot => {
-        const { name, facultyId } = snapshot.data();
+        const { name, facultyId } = snapshot.data() as IRepo;
         const facultyRef = firestore().collection('faculties').doc(facultyId);
         const facultySnapshot = await facultyRef.get();
         const facultyName = facultySnapshot.get('name');
@@ -26,7 +26,7 @@ export const onRepoCreated = region('asia-southeast2')
                     message: {
                         subject: 'New repo is created in your faculty',
                         html: `<p>Hello ${displayName},</p>
-                            <p>Admin has opened a repo ${name} in the faculty ${facultyName} that you are a ${role} of</p>
+                            <p>Admin has just opened a repo ${name} in the faculty ${facultyName} that you are a ${role} of</p>
                             <p>${note}</p>
                             <p>If you think this is a mistake, please contact admin immediately via the email ${ADMIN_EMAIL}</p>
                             <p>Thanks for reading,</p>
