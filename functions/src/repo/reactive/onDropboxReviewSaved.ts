@@ -7,6 +7,9 @@ export const onDropboxReviewSaved = region('asia-southeast2')
     .firestore.document('repos/{repoId}/dropboxes/{dropboxId}')
     .onUpdate(async change => {
         if (change.before.isEqual(change.after)) return null;
+        // Do nothing when student uploads or delete dropbox file
+        if (change.before.get('size') !== change.after.get('size')) return null;
+        // Review never changes the dropbox's size, continue...
         const {
             feedback,
             reviewerName,
